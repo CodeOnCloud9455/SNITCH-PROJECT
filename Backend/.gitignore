@@ -1,0 +1,11 @@
+# Environment variables
+.env
+.env.*
+!.env.example
+node_modules/
+.env
+.env.*
+!.env.example
+
+Backend/.env
+Frontend/.env
