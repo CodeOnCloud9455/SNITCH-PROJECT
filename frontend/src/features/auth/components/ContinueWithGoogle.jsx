@@ -52,10 +52,12 @@ const ContinueWithGoogle = () => {
 
   /* Derive background based on interaction state */
   const bg = pressed ? "#e8eaed" : hovered ? "#f1f3f4" : "#ffffff";
+  const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/$/, "");
+  const googleAuthUrl = `${apiBaseUrl}/api/auth/google`;
 
   return (
     <a
-      href="/api/auth/google"
+      href={googleAuthUrl}
       id="google-signin-btn"
       role="button"
       aria-label="Continue with Google"

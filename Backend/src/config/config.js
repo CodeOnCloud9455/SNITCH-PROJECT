@@ -35,6 +35,9 @@ export const config = {
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     IMAGEKIT_PRIVATE_KEY: process.env.IMAGEKIT_PRIVATE_KEY,
     RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID,
-    RAZORPAY_KEY_SECRET:process.env.RAZORPAY_KEY_SECRET
-}
+    RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET,
+    BACKEND_URL: process.env.BACKEND_URL || "https://snitch-project-1.onrender.com",
+    FRONTEND_URL: process.env.FRONTEND_URL || "https://snitch-project-six.vercel.app",
+    NODE_ENV: process.env.NODE_ENV || "development",
+};
      

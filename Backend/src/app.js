@@ -14,10 +14,25 @@ import { config } from "./config/config.js";
 
 const app = express();
 
+const allowedOrigins = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:3000",
+    "https://snitch-project-six.vercel.app",
+    config.FRONTEND_URL,
+].filter(Boolean);
+
 app.use(cors({
     origin: (origin, callback) => {
         // Allow requests with no origin (like mobile apps, curl, Postman) or any localhost / 127.0.0.1 port
         if (!origin || /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+            callback(null, true);
+        } else if (
+            origin === "https://snitch-project-six.vercel.app" ||
+            origin.endsWith(".vercel.app") ||
+            allowedOrigins.includes(origin)
+        ) {
             callback(null, true);
         } else {
             callback(null, true);
@@ -37,7 +52,7 @@ app.use(passport.initialize());
 passport.use(new GoogleStrategy({
     clientID: config.GOOGLE_CLIENT_ID,
     clientSecret: config.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/api/auth/google/callback"
+    callbackURL: `${config.BACKEND_URL || "http://localhost:3000"}/api/auth/google/callback`
 },(accessToken, refreshToken, profile, done) => {
     return done(null, profile);
 }))

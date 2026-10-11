@@ -15,11 +15,14 @@ async function sendTokenResponse(user, res, message) {
 
     console.log("TOKEN CREATED:", !!token);
 
+    const isHttps = process.env.NODE_ENV === "production" || Boolean(config.FRONTEND_URL?.startsWith("https://"));
+
     res.cookie("token", token, {
         httpOnly: true,
-        secure: false,
-        sameSite: "lax",
+        secure: isHttps,
+        sameSite: isHttps ? "none" : "lax",
         path: "/",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     console.log("COOKIE SET");
@@ -166,15 +169,18 @@ export const googleCallback = async (req, res) => {
         );
 
         // Store JWT in cookie
+        const isHttps = process.env.NODE_ENV === "production" || Boolean(config.FRONTEND_URL?.startsWith("https://"));
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false, // true in production with HTTPS
-            sameSite: "lax",
+            secure: isHttps,
+            sameSite: isHttps ? "none" : "lax",
             maxAge: 7 * 24 * 60 * 60 * 1000,
+            path: "/",
         });
 
         // Redirect to frontend
-        res.redirect("http://localhost:5173/");
+        const frontendUrl = (config.FRONTEND_URL || "https://snitch-project-six.vercel.app").replace(/\/$/, "");
+        res.redirect(`${frontendUrl}/`);
     } catch (error) {
         console.error("Google callback error:", error);
 
